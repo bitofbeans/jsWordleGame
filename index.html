@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="shortcut icon" href="favicon.ico" />
+        <link
+            rel="stylesheet"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css"
+            integrity="sha384-zCbKRCUGaJDkqS1kPbPd7TveP5iyJE0EjAuZQTgFLD2ylzuqKfdKlfG/eSrtxUkn"
+            crossorigin="anonymous"
+        />
+        <title>Wordle Clone &mdash; bitofbeans</title>
+        <style>
+            body {
+                display: flex;
+                flex-direction: column;
+                height: calc(100vh - 50px);
+                margin-top: 50px;
+                color: #d3d3d3;
+                background-color: #1a1a1b;
+                font-size: large;
+            }
+            footer {
+                margin-top: auto;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <!-- Header -->
+            <header>
+                <div class="page-header">
+                    <h1>Wordle Clone</h1>
+                </div>
+                <hr style="border-top: 1px solid rgba(255, 255, 255, 0.1)" />
+            </header>
+
+            <!-- Content -->
+            <article>
+                <p>
+                    Wordle game made as a bookmarklet
+                    <br />
+                    <br />
+                    To play, press this button:
+                    <button
+                        onclick="javascript:x=document.createElement('script');x.src='https://bitofbeans.github.io/jsWordleGame/dist/js/script.js'; x.id = 'script'; void document.getElementsByTagName('head')[0].appendChild(x);"
+                        class="btn btn-primary"
+                    >
+                        Play Game
+                    </button>
+                    <br />
+                    <br />
+                    Or, to use it anywhere, drag
+                    <a
+                        href="javascript:x=document.createElement('script');x.src='https://bitofbeans.github.io/jsWordleGame/dist/js/script.js'; x.id = 'script'; void document.getElementsByTagName('head')[0].appendChild(x);"
+                        >this</a
+                    >
+                    link into your bookmarks bar.
+                    <br />
+                    Then, on any website, (even this one!) click on the bookmark.
+                    <br />
+                    You should be able to see the game at the bottom of that page.
+                    <br />
+                    <br />
+
+                    Links below:
+                    <br />
+                    <a href="https://bitofbeans.github.io/jsWordleGame/dist/">
+                        Seperate GitHub page with game</a
+                    >
+                    <br />
+                    <a href="https://bitofbeans.github.io/jsWordleGame/dist/js/script.js">
+                        Raw Injection Code
+                    </a>
+                    <br />
+                    <a href="https://bitofbeans.github.io/jsWordleGame/dist/js/main.js">
+                        Raw Script Code</a
+                    >
+                    <br />
+                    <a href="https://bitofbeans.github.io/jsWordleGame/dist/style/style.css">
+                        Raw Stylesheet</a
+                    >
+                </p>
+            </article>
+        </div>
+        <!-- Footer -->
+        <footer>
+            <div
+                class="text-center p-3"
+                style="background-color: rgba(0, 0, 0, 0.2); font-size: 1rem"
+            >
+                Created by
+                <a href="https://bitofbeans.github.io/">bitofbeans</a>
+                on GitHub
+            </div>
+        </footer>
+        <!------------>
+    </body>
+</html>

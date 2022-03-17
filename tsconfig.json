@@ -1,0 +1,11 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "watch": true,
+        "outDir": "dist/js/",
+        "rootDir": "src/",
+        "lib": ["dom", "dom.iterable", "esnext"],
+        "allowJs": true,
+    },
+    "allowSyntheticDefaultImports": true
+}
