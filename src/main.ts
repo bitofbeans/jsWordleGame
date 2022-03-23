@@ -9,12 +9,11 @@ class GameManager {
         this.input = new InputManager(this);
 
         $.get("/dist/js/wordlist.txt", (data) => {
-            this.wordlist = data.split("\r\n");
+            this.wordlist = data.split(",");
         }).done(() => {
             // After wordlist is retrieved
             this.setup();
-        })
-
+        });
     }
 
     setup() {
@@ -54,8 +53,10 @@ class GameManager {
         let word = this.board.getWord();
         if (word.length < 5) {
             alert("too short");
-        } else if (!(this.wordlist.includes(word))) {
+        } else if (!this.wordlist.includes(word)) {
             alert("not in word list");
+        } else if (word === this.board.solution) {
+            alert("yup, you got it cuh");
         } else {
             this.board.newLine();
         }
@@ -172,7 +173,7 @@ class Board {
     solution: string;
     constructor(wordlist: string[]) {
         let idx = Math.floor(Math.random() * wordlist.length);
-        this.solution = wordlist[idx]
+        this.solution = wordlist[idx];
         console.log(this.solution);
         this.wordIdx = 0;
 

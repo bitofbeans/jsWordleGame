@@ -8,7 +8,7 @@ class GameManager {
         this.html = new HTMLManager();
         this.input = new InputManager(this);
         $.get("/dist/js/wordlist.txt", (data) => {
-            this.wordlist = data.split("\r\n");
+            this.wordlist = data.split(",");
         }).done(() => {
             // After wordlist is retrieved
             this.setup();
@@ -46,8 +46,11 @@ class GameManager {
         if (word.length < 5) {
             alert("too short");
         }
-        else if (!(this.wordlist.includes(word))) {
+        else if (!this.wordlist.includes(word)) {
             alert("not in word list");
+        }
+        else if (word === this.board.solution) {
+            alert("yup, you got it cuh");
         }
         else {
             this.board.newLine();
