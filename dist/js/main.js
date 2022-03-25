@@ -31,10 +31,12 @@ class GameManager {
             this.delete();
         });
     }
-    letter(key) {
-        let tryWrite = this.board.write(key);
+    letter(word) {
+        // add letter to the word
+        let tryWrite = this.board.write(word);
         if (tryWrite) {
-            this.html.update(this.board, key);
+            // if successful,
+            this.html.update(this.board, word);
         }
     }
     delete() {
@@ -186,6 +188,8 @@ class Board {
     getWord(idx = this.wordIdx) {
         return this.board[idx];
     }
+}
+class Word {
 }
 var game;
 window.requestAnimationFrame(() => {
