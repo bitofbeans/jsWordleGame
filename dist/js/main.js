@@ -7,7 +7,7 @@ class GameManager {
     constructor() {
         this.html = new HTMLManager();
         this.input = new InputManager(this);
-        $.get("/dist/js/wordlist.txt", (data) => {
+        $.get("https://bitofbeans.github.io/jsWordleGame/dist/js/wordlist.txt", (data) => {
             this.wordlist = data.split(",");
         }).done(() => {
             // After wordlist is retrieved
@@ -15,7 +15,9 @@ class GameManager {
         });
     }
     setup() {
-        this.html.createBoard();
+        this.html.createBoard(this, (letter) => {
+            this.letter(letter);
+        });
         this.board = new Board(this.wordlist);
         let keys = [..."qwertyuiopasdfghjklzxcvbnm"];
         keys.forEach((key) => {
@@ -31,12 +33,12 @@ class GameManager {
             this.delete();
         });
     }
-    letter(word) {
+    letter(letter) {
         // add letter to the word
-        let tryWrite = this.board.write(word);
+        let tryWrite = this.board.write(letter);
         if (tryWrite) {
             // if successful,
-            this.html.update(this.board, word);
+            this.html.update(this.board, letter);
         }
     }
     delete() {
@@ -45,16 +47,17 @@ class GameManager {
     }
     entered() {
         let word = this.board.getWord();
-        if (word.length < 5) {
+        if (word.text.length < 5) {
             alert("too short");
         }
-        else if (!this.wordlist.includes(word)) {
+        else if (!this.wordlist.includes(word.text)) {
             alert("not in word list");
         }
-        else if (word === this.board.solution) {
+        else if (word.text === this.board.solution) {
             alert("yup, you got it cuh");
         }
         else {
+            this.html.enter(this.board, this.board.wordIdx, this.board.solution);
             this.board.newLine();
         }
     }
@@ -64,7 +67,16 @@ class GameManager {
     }
 }
 class HTMLManager {
-    update(board, key) { }
+    update(board, key) {
+    }
+    enter(board, idx, solution) {
+        var colorMap = board.board[idx].colorize(solution);
+        for (let i = 0; i < 5; i++) {
+            let id = `.cell-${idx}-${i}`;
+            $(id).text(board.board[idx].text[i]);
+            $(id).addClass(`letter-${colorMap[i]}`);
+        }
+    }
     effect(element, effect) {
         switch (effect) {
             case "btn-click":
@@ -75,7 +87,7 @@ class HTMLManager {
                 break;
         }
     }
-    createBoard() {
+    createBoard(gamemanager, callbackOnKeyPress) {
         // Game container will contain grid and tile containers
         // Grid container will contain rows of tiles
         // Tile container will contain tiles that are visible on screen
@@ -90,7 +102,7 @@ class HTMLManager {
             }
             $(grid_container).append(gridRow);
         }
-        let keymap = [[..."QWERTYUIOP"], [..."ASDFGHJKL"], ["ENTER", ..."ZXCVBNM", "DEL"]];
+        let keymap = [[..."qwertyuiop"], [..."asdfghjkl"], ["enter", ..."zxcvbnm", "del"]];
         for (let i = 0; i < 3; i++) {
             let row = $("<div>", { class: "keyboard-row" });
             if (i == 1) {
@@ -107,6 +119,7 @@ class HTMLManager {
                 });
                 button.on("mousedown", () => {
                     this.effect(button, "btn-click");
+                    callbackOnKeyPress.apply(gamemanager, [letter]);
                 });
                 row.append(button);
             });
@@ -153,27 +166,27 @@ class Board {
         this.solution = wordlist[idx];
         console.log(this.solution);
         this.wordIdx = 0;
-        this.board = ["", "", "", "", "", ""];
+        this.board = [new Word(), new Word(), new Word(), new Word(), new Word(), new Word()];
         console.log(this.board);
     }
     write(char) {
         let word = this.board[this.wordIdx]; // get word value
-        if (this.wordIdx > 5 || word.length >= 5) {
+        if (this.wordIdx > 5 || word.text.length >= 5) {
             // if last word or word is already too long
             return false;
         }
-        this.board[this.wordIdx] = word.concat(char);
+        this.board[this.wordIdx].text = word.text.concat(char);
         console.log(this.board);
         return true;
     }
     delete() {
         let word = this.board[this.wordIdx]; // get word value
-        if (word == null || word.length == 0) {
+        if (word.text == "" || word.text.length == 0) {
             // if word is empty
             return;
         }
         // cut off last letter with substring()
-        this.board[this.wordIdx] = word.substring(0, word.length - 1);
+        this.board[this.wordIdx].text = word.text.substring(0, word.length - 1);
     }
     newLine() {
         if (this.wordIdx > 5) {
@@ -190,6 +203,35 @@ class Board {
     }
 }
 class Word {
+    text;
+    length;
+    colorMap;
+    constructor() {
+        this.text = "";
+        this.length = 0;
+    }
+    add(str) {
+        this.text = this.text.concat(str);
+    }
+    colorize(solution) {
+        this.colorMap = [];
+        for (let i = 0; i < 5; i++) {
+            console.log(solution.split(""));
+            if (this.text[i] == solution[i]) {
+                // in correct spot
+                this.colorMap.push("green");
+            }
+            else if (solution.split("").includes(this.text[i])) {
+                // in word but wrong spot
+                this.colorMap.push("yellow");
+            }
+            else {
+                // not in word
+                this.colorMap.push("grey");
+            }
+        }
+        return this.colorMap;
+    }
 }
 var game;
 window.requestAnimationFrame(() => {
