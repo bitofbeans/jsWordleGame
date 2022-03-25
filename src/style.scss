@@ -24,13 +24,6 @@ $cols: 5;
     }
 }
 
-@function repeat($length, $value) {
-    $repeated: ();
-    @for $i from 1 through $length {
-        $repeated: append($repeated, $value);
-    }
-    @return $repeated;
-}
 
 div.bootstrap * {
     box-sizing: content-box;
@@ -81,13 +74,13 @@ div.bootstrap * {
         color: white;
     }
     &.letter-grey {
-        background-color: rgb(129, 133, 136)
+        background-color: #a2a2a2;
     }
     &.letter-yellow {
-        background-color: rgb(252, 233, 63)
+        background-color: #e9c601;
     }
     &.letter-green {
-        background-color: rgb(0, 143, 0);
+        background-color: #57ac78;
     }
 }
 
