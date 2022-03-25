@@ -43,12 +43,13 @@ class GameManager {
         let tryWrite = this.board.write(letter);
         if (tryWrite) {
             // if successful,
-            this.html.update(this.board, letter);
+            this.html.update(this.board);
         }
     }
 
     delete() {
         this.board.delete();
+        this.html.update(this.board);
         console.log(this.board.board);
     }
 
@@ -73,8 +74,13 @@ class GameManager {
 }
 
 class HTMLManager {
-    update(board: Board, key: string) {
-
+    update(board: Board) {
+        var idx = board.wordIdx
+        for (let i = 0; i < 5; i++) {
+            let id: string = `.cell-${idx}-${i}`
+            let content = board.board[idx].text[i] ? board.board[idx].text[i] : " "
+            $(id).text(content)
+        }
     }
 
     enter(board: Board, idx: number, solution: string) {
@@ -83,7 +89,6 @@ class HTMLManager {
             let id: string = `.cell-${idx}-${i}`
             $(id).text(board.board[idx].text[i])
             $(id).addClass(`letter-${colorMap[i]}`)
-
         }
     }
 
@@ -217,7 +222,7 @@ class Board {
             return;
         }
         // cut off last letter with substring()
-        this.board[this.wordIdx].text = word.text.substring(0, word.length - 1);
+        this.board[this.wordIdx].text = word.text.substring(0, word.text.length - 1);
     }
 
     newLine(): boolean {

@@ -38,11 +38,12 @@ class GameManager {
         let tryWrite = this.board.write(letter);
         if (tryWrite) {
             // if successful,
-            this.html.update(this.board, letter);
+            this.html.update(this.board);
         }
     }
     delete() {
         this.board.delete();
+        this.html.update(this.board);
         console.log(this.board.board);
     }
     entered() {
@@ -67,7 +68,13 @@ class GameManager {
     }
 }
 class HTMLManager {
-    update(board, key) {
+    update(board) {
+        var idx = board.wordIdx;
+        for (let i = 0; i < 5; i++) {
+            let id = `.cell-${idx}-${i}`;
+            let content = board.board[idx].text[i] ? board.board[idx].text[i] : " ";
+            $(id).text(content);
+        }
     }
     enter(board, idx, solution) {
         var colorMap = board.board[idx].colorize(solution);
@@ -186,7 +193,7 @@ class Board {
             return;
         }
         // cut off last letter with substring()
-        this.board[this.wordIdx].text = word.text.substring(0, word.length - 1);
+        this.board[this.wordIdx].text = word.text.substring(0, word.text.length - 1);
     }
     newLine() {
         if (this.wordIdx > 5) {
