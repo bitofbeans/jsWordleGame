@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
+import { AppContext } from "../App";
 
 function Key({ keyVal, bigKey }) {
-    const bigClass = bigKey ? "key-big" : ""
+    const { onSelectLetter, onDelete, onEnter } = useContext(AppContext);
+
+    const selectLetter = () => {
+        if (keyVal === "ENTER") {
+            onEnter();
+        } else if (keyVal === "DEL") {
+            onDelete();
+        } else {
+            onSelectLetter(keyVal);
+        }
+    };
+
     return (
-        <div className={`key ${bigClass}`}>
+        <div className={`key${bigKey ? " key-big" : ""}`} onClick={selectLetter}>
             {keyVal}
         </div>
     );
