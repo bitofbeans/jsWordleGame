@@ -2,6 +2,10 @@
 
 Wordle clone created in reactjs
 
+Takes up 589 KB when built (with srcmap)
+
+otherwise 194 KB (without srcmap)
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
