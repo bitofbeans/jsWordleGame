@@ -34,7 +34,6 @@
     .key-present {
         background: #b59f3b;
     }
-
     .key-absent {
         background: rgb(77, 83, 86);
     }

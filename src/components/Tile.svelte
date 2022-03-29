@@ -1,8 +1,13 @@
 <script>
-    
+    import { board } from "../util";
+
+    export let row;
+    export let letterPos;
+
+    const letter = $board[row][letterPos];
 </script>
 
-<div class="tile" />
+<div class="tile">{letter}</div>
 
 <style>
     .tile {
@@ -19,5 +24,11 @@
     .tile.tile-full {
         border: 2px solid #818384;
         animation: pop-in 150ms ease;
+    }
+
+    @media screen and (max-height: 550px) {
+        .tile {
+            font-size: 1rem;
+        }
     }
 </style>

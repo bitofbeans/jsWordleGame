@@ -14,10 +14,10 @@
 </script>
 
 <div class="board" bind:this={boardBinding}>
-    {#each $board as row}
+    {#each $board as row, i}
         <div class="board-row">
-            {#each row as tile}
-                <Tile />
+            {#each row as tile, j}
+                <Tile row={i} letterPos={j} />
             {/each}
         </div>
     {/each}

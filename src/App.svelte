@@ -5,7 +5,7 @@
     import BoardContainer from "./components/BoardContainer.svelte";
     import Keyboard from "./components/Keyboard.svelte";
 
-    import { board, boardElem, boardContainerElem } from "./util";
+    import { board, boardElem, boardContainerElem, wordSet, correctWord } from "./util";
 
 
     const resizeBoard = () => {
@@ -19,6 +19,7 @@
     };
 
     onMount(resizeBoard);
+    
 </script>
 
 <svelte:window on:resize={resizeBoard} />
@@ -33,6 +34,7 @@
         </BoardContainer>
         <Keyboard />
     </div>
+
 </main>
 
 <style>
