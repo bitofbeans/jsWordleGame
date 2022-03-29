@@ -1,8 +1,9 @@
 import { createContext, useState, useRef, useCallback, useEffect } from "react";
-import { boardDefault, generateWordSet } from "./Words";
+import { defaultBoard, generateWordSet } from "./Words";
 import Board from "./components/Board";
 import Keyboard from "./components/Keyboard";
 import GameOver from "./components/GameOver";
+import Toast from "./components/Toast";
 import "./App.css";
 
 export const AppContext = createContext();
@@ -11,12 +12,13 @@ function App() {
     let boardElem = useRef(null);
     let boardContainerElem = useRef(null);
 
-    const [board, setBoard] = useState(boardDefault);
+    const [board, setBoard] = useState(defaultBoard());
     const [currAttempt, setCurrAttempt] = useState({ attempt: 0, letterPos: 0 });
     const [wordSet, setWordSet] = useState(new Set());
     const [usedLetters, setUsedLetters] = useState([]);
     const [gameState, setGameState] = useState({ gameOver: false, win: false });
     const [kbBusy, setKbBusy] = useState(false);
+    const [toastMessage, setToastMessage] = useState("");
 
     const [correctWord, setCorrectWord] = useState("");
 
@@ -24,6 +26,7 @@ function App() {
         generateWordSet().then((words) => {
             setWordSet(words.wordSet);
             setCorrectWord(words.word.toUpperCase());
+            console.log(words.word)
         });
     };
 
@@ -34,6 +37,8 @@ function App() {
     const onSelectLetter = (keyVal) => {
         if (gameState.gameOver) return;
         if (currAttempt.letterPos > 4) return;
+
+        if (toastMessage) setToastMessage("");
 
         const newBoard = { ...board };
         newBoard[currAttempt.attempt][currAttempt.letterPos] = keyVal;
@@ -46,6 +51,8 @@ function App() {
         if (gameState.gameOver) return;
         if (currAttempt.letterPos === 0) return;
 
+        if (toastMessage) setToastMessage("");
+
         const newBoard = { ...board };
         newBoard[currAttempt.attempt][currAttempt.letterPos - 1] = "";
 
@@ -55,7 +62,7 @@ function App() {
 
     const onEnter = () => {
         if (gameState.gameOver) {
-            setBoard(boardDefault);
+            setBoard(defaultBoard());
             setCurrAttempt({ attempt: 0, letterPos: 0 });
             setWordSet(new Set());
             setUsedLetters([]);
@@ -68,6 +75,8 @@ function App() {
         }
         if (currAttempt.letterPos !== 5) return;
 
+        if (toastMessage) setToastMessage("");
+
         let currWord = "";
         for (let i = 0; i < 5; i++) {
             currWord += board[currAttempt.attempt][i];
@@ -75,7 +84,8 @@ function App() {
         if (wordSet.has(currWord.toLowerCase())) {
             setCurrAttempt({ attempt: currAttempt.attempt + 1, letterPos: 0 });
         } else {
-            alert("Not a valid word");
+            setToastMessage("Not a valid word");
+            return;
         }
 
         if (currWord === correctWord) {
@@ -128,6 +138,7 @@ function App() {
                 }}
             >
                 <div className="game-container">
+                    {toastMessage ? <Toast message={toastMessage} /> : ""}
                     {gameState.gameOver ? <GameOver /> : ""}
                     <div className="board-container" ref={boardContainerElem}>
                         <Board useRef={boardElem} />

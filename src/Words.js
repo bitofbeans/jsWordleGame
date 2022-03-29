@@ -1,12 +1,14 @@
 import wordBank from "./word-bank.txt";
-export const boardDefault = [
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-    ["", "", "", "", ""],
-];
+export const defaultBoard = () => {
+    return [
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+        ["", "", "", "", ""],
+    ];
+};
 
 export const generateWordSet = async () => {
     let wordSet;
