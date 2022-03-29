@@ -4,21 +4,35 @@ import { AppContext } from "../App";
 import Key from "./Key";
 
 function Keyboard() {
-    const { onSelectLetter, onDelete, onEnter } = useContext(AppContext);
+    const { onSelectLetter, onDelete, onEnter, kbBusy, setKbBusy } = useContext(AppContext);
 
     const keys1 = [..."QWERTYUIOP"];
     const keys2 = [..."ASDFGHJKL"];
     const keys3 = [..."ZXCVBNM"];
 
+    const handleKbEvent = (callback) => {
+        setKbBusy(true);
+        callback();
+        setKbBusy(false);
+    };
+
     const handleKeyboard = useCallback((event) => {
         if (event.key === "Enter") {
-            onEnter();
+            handleKbEvent(() => onEnter());
         } else if (event.key === "Backspace") {
-            onDelete();
+            handleKbEvent(() => onDelete());
         } else {
             [..."QWERTYUIOPASDFGHJKLZXCVBNM"].forEach((key) => {
                 if (event.key === key.toLowerCase()) {
-                    onSelectLetter(key);
+                    if (kbBusy) {
+                        // To prevent event listener collisions
+                        // basically to get rid of bug where you press delete and a key fast and it will leave a space
+                        setTimeout(() => {
+                            handleKbEvent(() => onSelectLetter(key));
+                        }, 50);
+                    } else {
+                        handleKbEvent(() => onSelectLetter(key));
+                    }
                 }
             });
         }
@@ -37,9 +51,11 @@ function Keyboard() {
                 })}
             </div>
             <div className="kb-line">
+                <div className="spacer"></div>
                 {keys2.map((key) => {
                     return <Key key={key} keyVal={key} />;
                 })}
+                <div className="spacer"></div>
             </div>
             <div className="kb-line">
                 <Key key={"ENTER"} keyVal={"ENTER"} bigKey />

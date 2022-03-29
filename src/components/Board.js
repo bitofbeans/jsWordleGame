@@ -1,9 +1,9 @@
 import React from "react";
 import Letter from "./Letter";
 
-function Board() {
+function Board({ useRef }) {
     return (
-        <div className="board">
+        <div className="board" ref={useRef}>
             <div className="board-row">
                 <Letter letterPos={0} attemptVal={0} />
                 <Letter letterPos={1} attemptVal={0} />
