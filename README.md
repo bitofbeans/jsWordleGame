@@ -18,7 +18,6 @@ npm run dev
 
 The page will be loaded to [localhost:8080](http://localhost:8080).
 
-
 To build the app:
 
 ```bash
@@ -26,4 +25,3 @@ npm run build
 ```
 
 You can run the app with `npm run start`.
-

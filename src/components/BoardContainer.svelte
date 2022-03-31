@@ -1,13 +1,18 @@
 <script>
     import { onMount } from "svelte";
-    import { boardContainerElem } from "../util";
+    import { boardElem } from "../util";
 
-    // Get Board Container element
     let boardContainer;
-    onMount(() => {
-        boardContainerElem.set(boardContainer);
-    });
+    const resizeBoard = () => {
+        var width = Math.min(Math.floor(boardContainer.clientHeight * (5 / 6)), 350);
+        var height = 6 * Math.floor(width / 5);
+        $boardElem.style.width = `${width}px`;
+        $boardElem.style.height = `${height}px`;
+    };
+    onMount(resizeBoard);
+
 </script>
+<svelte:window on:resize={resizeBoard} />
 
 <div class="board-container" bind:this={boardContainer}>
     <slot />

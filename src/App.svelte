@@ -1,28 +1,15 @@
 <!-- Main App-->
 <script>
-    import { onMount } from "svelte";
     import Board from "./components/Board.svelte";
     import BoardContainer from "./components/BoardContainer.svelte";
     import Keyboard from "./components/Keyboard.svelte";
-
-    import { board, boardElem, boardContainerElem, wordSet, correctWord } from "./util";
-
-
-    const resizeBoard = () => {
-        var width = Math.min(
-            Math.floor($boardContainerElem.clientHeight * (5 / 6)),
-            350
-        );
-        var height = 6 * Math.floor(width / 5);
-        $boardElem.style.width = `${width}px`;
-        $boardElem.style.height = `${height}px`;
-    };
-
-    onMount(resizeBoard);
     
+    // for testing
+    import { wordSet, correctWord } from "./util";
+    console.log($wordSet);
+    console.log($correctWord);
 </script>
 
-<svelte:window on:resize={resizeBoard} />
 <main>
     <nav>
         <h1>Wordle</h1>
@@ -34,7 +21,6 @@
         </BoardContainer>
         <Keyboard />
     </div>
-
 </main>
 
 <style>
@@ -80,20 +66,6 @@
         }
     }
 
-    @keyframes pop-in {
-        0% {
-            opacity: 0;
-        }
-        40% {
-            transform: scale(1.2);
-            opacity: 0.75;
-        }
-        100% {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-
     @keyframes fade-out-down {
         0% {
             opacity: 1;
@@ -129,38 +101,6 @@
         height: calc(100% - 60px);
     }
     /*
-
-
-    #correct,
-    #present,
-    #absent {
-        transition: background 0.5s;
-    }
-    #present {
-        animation-name: fade-in;
-        animation-duration: 0.5s;
-        z-index: 5;
-    }
-
-    #correct {
-        background-color: #538d4e;
-        border: 2px solid rgba(0, 0, 0, 0.2);
-    }
-    #present {
-        background: repeating-linear-gradient(
-        45deg,
-        #b59f3b,
-        #b59f3b 10px,
-        #bda63e 10px,
-        #bda63e 20px
-    );
-        border: 2px dashed #bda63e;
-    }
-
-    #absent {
-        background-color: #3a3a3c;
-        border: none !important;
-    }
 
     .gameOver :is(h1, h2, h3) {
         margin: 1rem 0;

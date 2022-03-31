@@ -1,9 +1,17 @@
 <script>
+    import { handleKeyDown } from "../util";
+
     export let val;
     export let bigKey = false;
+
+    const handleKeyPressed = () => {
+        if (val === "enter") $handleKeyDown({ key: "Enter" });
+        if (val === "del") $handleKeyDown({ key: "Backspace" });
+        else $handleKeyDown({ key: val });
+    };
 </script>
 
-<div class="key{bigKey?" key-big":""}">
+<div class="key{bigKey ? ' key-big' : ''}" on:click={handleKeyPressed}>
     {val}
 </div>
 
@@ -22,6 +30,9 @@
         touch-action: manipulation;
         transition: background 500ms;
         transition-delay: 250ms;
+        text-transform: uppercase;
+        -webkit-user-select: none;
+        -ms-user-select: none;
     }
 
     .key-big {

@@ -1,10 +1,14 @@
 <script>
     import Key from "./Key.svelte";
 
-    const keys1 = [..."QWERTYUIOP"];
-    const keys2 = [..."ASDFGHJKL"];
-    const keys3 = [..."ZXCVBNM"];
+    const keys1 = [..."qwertyuiop"];
+    const keys2 = [..."asdfghjkl"];
+    const keys3 = [..."zxcvbnm"];
+
+    import { handleKeyDown } from "../util";
 </script>
+
+<svelte:window on:keydown={$handleKeyDown} />
 
 <div class="keyboard">
     <div class="kb-line">
@@ -22,11 +26,11 @@
     </div>
 
     <div class="kb-line">
-        <Key bigKey val="ENTER" />
+        <Key bigKey val="enter" />
         {#each keys3 as key}
             <Key val={key} />
         {/each}
-        <Key bigKey val="ENTER" />
+        <Key bigKey val="del" />
     </div>
 </div>
 
