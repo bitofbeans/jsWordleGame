@@ -3,10 +3,9 @@
     import Board from "./components/Board.svelte";
     import BoardContainer from "./components/BoardContainer.svelte";
     import Keyboard from "./components/Keyboard.svelte";
-    
+
     // for testing
-    import { wordSet, correctWord } from "./util";
-    console.log($wordSet);
+    import { correctWord } from "./util";
     console.log($correctWord);
 </script>
 

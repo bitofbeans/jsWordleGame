@@ -9,34 +9,39 @@
     let animation;
     let tileState = "";
 
-    // get letter
     $: letter = $board[row][letterPos];
+
+    // when letter changes to something truthy, set animation
+    $: letter && (animation = "pop-in");
 
     // when state changes to something truthy, set animation
     $: state && (animation = "flip-in");
 
     onMount(() => {
         tile.addEventListener("animationend", ({ animationName, target }) => {
-            // when flip-in animation ends, set animation to flip-out
-            if (animationName.includes("flip-in")) {
+            if (animation == "pop-in") {
+                // when pop-in animation ends, remove animation
+                animation = "";
+            }
+            else if (animation == "flip-in") {
+                // when flip-in animation ends, set animation to flip-out
                 animation = "flip-out";
                 tileState = state;
             }
-            // when flip-out animation ends, remove animation
-            if (animationName.includes("flip-out")) {
+            else if (animation == "flip-out") {
+                // when flip-out animation ends, remove animation
                 animation = "";
             }
         });
     });
 </script>
 
-<!-- prettier-ignore -->
 <div
     bind:this={tile}
     class={`tile`}
-    class:tile-full={letter !== "" && state === ""}
-    data-state={tileState || ""}
-    data-animation={animation ||""}
+    class:tile-full={letter !== ""}
+    data-state={tileState}
+    data-animation={animation}
 >
     {letter}
 </div>
@@ -83,13 +88,6 @@
         }
     }
 
-    @mixin delay {
-        @for $i from 1 through 4 {
-            &:nth-child(#{$i + 1}) {
-                animation-delay: $i * 300ms;
-            }
-        }
-    }
     .tile {
         text-transform: uppercase;
         z-index: 5;
@@ -102,13 +100,8 @@
         justify-items: center;
         box-sizing: border-box;
     }
-    .tile.tile-full.tile[data-state=""] {
+    .tile-full {
         border: 2px solid #818384;
-        animation: pop-in 150ms ease;
-    }
-
-    .tile[data-state="present"] {
-        z-index: 5;
     }
 
     .tile[data-state="correct"] {
@@ -130,19 +123,25 @@
         background-color: #3a3a3c;
         border: none;
     }
-
+    .tile[data-animation="pop-in"] {
+        animation: pop-in 150ms ease;
+    }
     .tile[data-animation="flip-in"] {
-        border: 2px solid #818384;
         animation-name: flip-in;
         animation-duration: 250ms;
         animation-timing-function: ease-in;
-        @include delay;
+        // animation delays
+        @for $i from 1 through 4 {
+            &:nth-child(#{$i + 1}) {
+                animation-delay: $i * 300ms;
+            }
+        }
     }
 
     .tile[data-animation="flip-out"] {
         animation-name: flip-out;
         animation-duration: 250ms;
-        animation-timing-function: ease-in;
+        animation-timing-function: ease-out;
     }
 
     @media screen and (max-height: 550px) {

@@ -10,8 +10,8 @@
         $boardElem.style.height = `${height}px`;
     };
     onMount(resizeBoard);
-
 </script>
+
 <svelte:window on:resize={resizeBoard} />
 
 <div class="board-container" bind:this={boardContainer}>
