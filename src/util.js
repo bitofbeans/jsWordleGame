@@ -1,5 +1,5 @@
 // Utility functions and stores
-import { writable } from "svelte/store";
+import { writable, readable } from "svelte/store";
 import guessableWords from "./guessable-words.json";
 import targetWords from "./target-words.json";
 
@@ -23,7 +23,7 @@ const generateWordSet = () => {
     correctWord.set(word);
 };
 
-const addToast = ({ type = "small", content = "" }) => {
+const addToast = ({ type = "small", content = "", timeOut = 1000 }) => {
     // unique id to find it later
     const id = Math.floor(Math.random() * 10000);
 
@@ -33,11 +33,13 @@ const addToast = ({ type = "small", content = "" }) => {
         content,
     };
 
-    toasts.update((old) => [toast,...old ]);
+    toasts.update((old) => [toast, ...old]);
 
-    setTimeout(() => {
-        toasts.update((old) => old.filter((item) => item.id !== id));
-    }, 1000);
+    if (timeOut !== false) {
+        setTimeout(() => {
+            toasts.update((old) => old.filter((item) => item.id !== id));
+        }, timeOut);
+    }
 };
 
 const board = writable(getDefaultBoard());
@@ -55,7 +57,9 @@ const handleKeyDown = writable();
 
 const toasts = writable([]);
 
-const usedLetters = writable({})
+const usedLetters = writable({});
+
+const gameState = writable({ gameOver: false, win: false });
 
 export {
     getDefaultBoard,
@@ -69,4 +73,5 @@ export {
     toasts,
     addToast,
     usedLetters,
+    gameState,
 };

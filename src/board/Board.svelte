@@ -13,6 +13,8 @@
         wordSet,
         addToast,
         usedLetters,
+        gameState,
+        toasts,
     } from "../util";
 
     // Get Board element
@@ -25,38 +27,79 @@
 
     $handleKeyDown = ({ key }) => {
         if (key === "Enter") {
-            if ($cursor.row > 5) return;
-
-            const boardWord = $board[$cursor.row].join("");
-
-            if (boardWord.length !== 5) {
-                showFeedback("Not enough letters", "shake", 750);
+            if ($gameState.gameOver === true) {
+                // reset game
+                $board = getDefaultBoard();
+                boardState = getDefaultBoard();
+                $cursor = { row: 0, letterPos: 0 };
+                $gameState.gameOver = false;
+                $gameState.win = false;
+                $usedLetters = [];
+                $toasts = []
+                
                 return;
-            } else if (!$wordSet.has(boardWord)) {
-                showFeedback("Not in wordlist", "shake", 750);
-
-                return;
-            } else {
-                colorLetters(boardWord);
-
-                if (boardWord === $correctWord) {
-                    let row = $cursor.row;
-                    setTimeout(() => {
-                        addToast({ content: "Great" });
-                        boardState[row] = boardState[row].map((x)=>"guessed-correct")
-                    }, 1600);
-                }
             }
 
+            if ($cursor.row > 5) return;
+
+            onEnter();
+        } else if (key === "Backspace") {
+            if ($gameState.gameOver === true) return;
+            if ($cursor.letterPos === 0) return; // left edge
+
+            deleteLetter();
+        } else if ([..."qwertyuiopasdfghjklzxcvbnm"].includes(key)) {
+            // if it is a keyboard letter
+            if ($gameState.gameOver === true) return;
+            if ($cursor.letterPos > 4) return; // right edge
+
+            writeLetter(key);
+        }
+    };
+
+    const onEnter = () => {
+        const boardWord = $board[$cursor.row].join("");
+
+        if (boardWord.length !== 5) {
+            showFeedback("Not enough letters", "shake", 750);
+            return;
+        } else if (!$wordSet.has(boardWord)) {
+            showFeedback("Not in wordlist", "shake", 750);
+            return;
+        }
+        // else
+
+        colorLetters(boardWord);
+
+        let row = $cursor.row;
+
+        if (boardWord === $correctWord) {
+            setTimeout(() => {
+                // after all letters are flipped
+                addToast({ content: "Great, press Enter to play again", timeOut: 5000 });
+                
+                boardState[row] = boardState[row].map((x) => "guessed-correct");
+                
+                $gameState.gameOver = true;
+                $gameState.win = true;
+            }, 1600);
+        } else if (row === 5) {
+            setTimeout(() => {
+                // after all letters are flipped
+                addToast({
+                    content: `The correct word was ${$correctWord.toUpperCase()}, press Enter to try again`,
+                    timeOut: false,
+                });
+
+                $gameState.gameOver = true;
+                $gameState.win = false;
+            }, 1600);
+        } else {
             // move cursor down
             $cursor.row++;
             $cursor.letterPos = 0;
 
             pauseInput(1500);
-        } else if (key === "Backspace") {
-            deleteLetter();
-        } else if ([..."qwertyuiopasdfghjklzxcvbnm"].includes(key)) {
-            writeLetter(key); // if it is a keyboard letter
         }
     };
 
@@ -87,36 +130,32 @@
                 if (!$usedLetters[letter]) {
                     // make sure that we don't overwrite it if it exists
                     // if it exists, then it might equal "correct"
-                    $usedLetters[letter] = "present";   
+                    $usedLetters[letter] = "present";
                 }
             } else {
                 boardState[$cursor.row][i] = "absent";
 
-                $usedLetters[letter] = "absent";   
+                $usedLetters[letter] = "absent";
             }
         });
     };
 
     const pauseInput = (ms) => {
-        // if it is used, the function wont do anything for some ms
+        // if it is used, handleKeyDown wont do anything for some ms
         let temp = $handleKeyDown;
         $handleKeyDown = null;
         setTimeout(() => ($handleKeyDown = temp), 1500);
     };
 
     const writeLetter = (key) => {
-        // if left edge
-        if ($cursor.letterPos > 4) return;
-
         $board[$cursor.row][$cursor.letterPos] = key;
+
         $cursor.letterPos++;
     };
 
     const deleteLetter = () => {
-        // if right edge
-        if ($cursor.letterPos === 0) return;
-
         $board[$cursor.row][$cursor.letterPos - 1] = "";
+
         $cursor.letterPos--;
     };
 </script>

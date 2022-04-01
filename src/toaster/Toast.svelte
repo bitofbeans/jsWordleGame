@@ -4,10 +4,13 @@
     export let content;
 </script>
 
-<!--  -->
-<div class="toast-{type}" out:fade={{ duration: 150 }} >
-    {content}
-</div>
+{#if type == "small"}
+    <div class="toast-{type}" out:fade={{ duration: 150 }}>
+        {content}
+    </div>
+{:else}
+    <!-- else content here -->
+{/if}
 
 <style>
     .toast-small {

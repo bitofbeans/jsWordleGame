@@ -16,6 +16,8 @@
 
     // when state changes to something truthy, set animation
     $: state && (animation = "flip-in");
+
+    $: state == "" && (tileState = "")
     // if state changes to this, dont animate
     $: state === "guessed-correct" && ((animation = ""), (tileState = state));
 
@@ -126,9 +128,9 @@
     }
     .tile[data-state="guessed-correct"] {
         transition: background-color 0.5s, border 0.5s, box-shadow 0.5s;
-        background-color: #caac22;
-        border: 2px solid #8e7b2494;
-        box-shadow: 0px 0px 10px #bda63e;
+        background-color: #6cb966;
+        border: 2px solid rgba(0, 0, 0, 0.2);
+        box-shadow: 0px 0px 10px 2px #3ebd4c;
     }
 
     .tile[data-animation="pop-in"] {
