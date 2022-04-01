@@ -16,19 +16,19 @@
 
     // when state changes to something truthy, set animation
     $: state && (animation = "flip-in");
+    // if state changes to this, dont animate
+    $: state === "guessed-correct" && ((animation = ""), (tileState = state));
 
     onMount(() => {
-        tile.addEventListener("animationend", ({ animationName, target }) => {
-            if (animation == "pop-in") {
+        tile.addEventListener("animationend", ({ animationName }) => {
+            if (animation == "pop-in" && animationName.includes("pop-in")) {
                 // when pop-in animation ends, remove animation
                 animation = "";
-            }
-            else if (animation == "flip-in") {
+            } else if (animation == "flip-in" && animationName.includes("flip-in")) {
                 // when flip-in animation ends, set animation to flip-out
                 animation = "flip-out";
                 tileState = state;
-            }
-            else if (animation == "flip-out") {
+            } else if (animation == "flip-out" && animationName.includes("flip-out")) {
                 // when flip-out animation ends, remove animation
                 animation = "";
             }
@@ -89,6 +89,7 @@
     }
 
     .tile {
+        // transform-style: preserve-3d;
         text-transform: uppercase;
         z-index: 5;
         position: relative;
@@ -123,6 +124,13 @@
         background-color: #3a3a3c;
         border: none;
     }
+    .tile[data-state="guessed-correct"] {
+        transition: background-color 0.5s, border 0.5s, box-shadow 0.5s;
+        background-color: #caac22;
+        border: 2px solid #8e7b2494;
+        box-shadow: 0px 0px 10px #bda63e;
+    }
+
     .tile[data-animation="pop-in"] {
         animation: pop-in 150ms ease;
     }
@@ -137,7 +145,6 @@
             }
         }
     }
-
     .tile[data-animation="flip-out"] {
         animation-name: flip-out;
         animation-duration: 250ms;

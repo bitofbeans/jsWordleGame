@@ -1,8 +1,9 @@
 <!-- Main App-->
 <script>
-    import Board from "./components/Board.svelte";
-    import BoardContainer from "./components/BoardContainer.svelte";
-    import Keyboard from "./components/Keyboard.svelte";
+    import Board from "./board/Board.svelte";
+    import BoardContainer from "./board/BoardContainer.svelte";
+    import Keyboard from "./keyboard/Keyboard.svelte";
+    import Toast from "./toaster/ToastContainer.svelte";
 
     // for testing
     import { correctWord } from "./util";
@@ -15,6 +16,7 @@
     </nav>
 
     <div class="game-container">
+        <Toast />
         <BoardContainer>
             <Board />
         </BoardContainer>
