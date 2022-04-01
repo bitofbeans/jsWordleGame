@@ -12,6 +12,7 @@
         correctWord,
         wordSet,
         addToast,
+        usedLetters,
     } from "../util";
 
     // Get Board element
@@ -75,13 +76,23 @@
         boardWord.split("").forEach((letter, i) => {
             if ($correctWord[i] == letter) {
                 boardState[$cursor.row][i] = "correct";
+
+                $usedLetters[letter] = "correct";
             } else if (uniqueChars.includes(letter)) {
                 // remove so we dont repeat it
                 const index = uniqueChars.indexOf(letter);
                 uniqueChars[index] = "";
                 boardState[$cursor.row][i] = "present";
+
+                if (!$usedLetters[letter]) {
+                    // make sure that we don't overwrite it if it exists
+                    // if it exists, then it might equal "correct"
+                    $usedLetters[letter] = "present";   
+                }
             } else {
                 boardState[$cursor.row][i] = "absent";
+
+                $usedLetters[letter] = "absent";   
             }
         });
     };

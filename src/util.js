@@ -55,6 +55,8 @@ const handleKeyDown = writable();
 
 const toasts = writable([]);
 
+const usedLetters = writable({})
+
 export {
     getDefaultBoard,
     generateWordSet,
@@ -66,4 +68,5 @@ export {
     handleKeyDown,
     toasts,
     addToast,
+    usedLetters,
 };
