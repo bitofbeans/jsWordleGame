@@ -1,5 +1,6 @@
 <!-- Main App-->
 <script>
+    import Navbar from "./nav/Navbar.svelte";
     import Board from "./board/Board.svelte";
     import BoardContainer from "./board/BoardContainer.svelte";
     import Keyboard from "./keyboard/Keyboard.svelte";
@@ -7,9 +8,7 @@
 </script>
 
 <main>
-    <nav>
-        <h1>Wordle</h1>
-    </nav>
+    <Navbar />
 
     <div class="game-container">
         <Toast />
@@ -25,16 +24,6 @@
         height: 100%;
         text-align: center;
         color: white;
-    }
-
-    nav {
-        background-color: rgb(26, 27, 29);
-        border-bottom: 1px solid rgb(75, 75, 75);
-    }
-    nav h1 {
-        margin: 0;
-        font-size: 2.2rem;
-        height: 50px;
     }
 
     .game-container {

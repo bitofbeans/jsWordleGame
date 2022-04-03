@@ -1,5 +1,5 @@
 <script>
-    import { board } from "../util";
+    import { board, ANIMATE } from "../util";
     import { onMount } from "svelte";
     export let row;
     export let letterPos;
@@ -9,17 +9,25 @@
     let animation;
     let tileState = "";
 
+    const animate = (val) => {
+        if ($ANIMATE) {
+            animation = val
+        } else {
+            tileState = state
+        }
+    }
+
     $: letter = $board[row][letterPos];
 
     // when letter changes to something truthy, set animation
-    $: letter && (animation = "pop-in");
+    $: letter && animate("pop-in");
 
     // when state changes to something truthy, set animation
-    $: state && (animation = "flip-in");
+    $: state && animate("flip-in");
 
     // for resetting
     $: state == "" && (tileState = "")
-    
+
     // if state changes to this, dont animate
     $: state === "guessed-correct" && ((animation = ""), (tileState = state));
 

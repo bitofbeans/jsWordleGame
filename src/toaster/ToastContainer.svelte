@@ -5,7 +5,7 @@
 
 <div class="toaster">
     {#each $toasts as toast}
-        <Toast type={toast.type} content={toast.content} />
+        <Toast content={toast.content} />
     {/each}
 </div>
 

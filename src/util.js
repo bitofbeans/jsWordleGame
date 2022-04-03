@@ -1,5 +1,5 @@
 // Utility functions and stores
-import { writable, readable } from "svelte/store";
+import { writable } from "svelte/store";
 import guessableWords from "./guessable-words.json";
 import targetWords from "./target-words.json";
 
@@ -41,6 +41,8 @@ const addToast = ({ content = "", timeOut = 1000 }) => {
     }
 };
 
+const ANIMATE = writable(true) 
+
 const board = writable(getDefaultBoard());
 
 const boardElem = writable();
@@ -60,6 +62,7 @@ const usedLetters = writable({});
 const gameState = writable({ gameOver: false, win: false });
 
 export {
+    ANIMATE,
     getDefaultBoard,
     generateWordSet,
     board,

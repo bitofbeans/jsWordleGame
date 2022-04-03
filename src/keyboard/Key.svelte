@@ -1,5 +1,5 @@
 <script>
-    import { handleKeyDown, usedLetters } from "../util";
+    import { handleKeyDown, usedLetters, ANIMATE } from "../util";
 
     export let val;
     export let bigKey = false;
@@ -13,7 +13,7 @@
     };
 
     const onStateChange = () => {
-        if ($usedLetters[val]) {
+        if ($usedLetters[val] && $ANIMATE) {
             // if it is changed to a value, wait (for letters to stop flipping)
             setTimeout(() => (state = $usedLetters[val]), 1750);
         } else {

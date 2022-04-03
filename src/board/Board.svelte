@@ -4,6 +4,7 @@
     import Tile from "./Tile.svelte";
     import Row from "./Row.svelte";
     import {
+        ANIMATE,
         board,
         boardElem,
         cursor,
@@ -50,12 +51,12 @@
             if ($cursor.letterPos === 0) return; // left edge
 
             deleteLetter();
-        } else if ([..."qwertyuiopasdfghjklzxcvbnm"].includes(key)) {
+        } else if ([..."qwertyuiopasdfghjklzxcvbnm"].includes(key.toLowerCase())) {
             // if it is a keyboard letter
             if ($gameState.gameOver === true) return;
             if ($cursor.letterPos > 4) return; // right edge
 
-            writeLetter(key);
+            writeLetter(key.toLowerCase());
         }
     };
 
@@ -75,6 +76,7 @@
 
         let row = $cursor.row;
 
+        const delay = $ANIMATE ? 1550: 0 // delay
         if (boardWord === $correctWord) {
             setTimeout(() => {
                 // after all letters are flipped
@@ -84,7 +86,7 @@
                 
                 $gameState.gameOver = true;
                 $gameState.win = true;
-            }, 1600);
+            }, delay);
         } else if (row === 5) {
             setTimeout(() => {
                 // after all letters are flipped
@@ -95,13 +97,14 @@
 
                 $gameState.gameOver = true;
                 $gameState.win = false;
-            }, 1600);
+            }, delay);
         } else {
             // move cursor down
             $cursor.row++;
             $cursor.letterPos = 0;
 
-            pauseInput(1500);
+            console.log(delay)
+            pauseInput(delay);
         }
     };
 
@@ -146,7 +149,7 @@
         // if it is used, handleKeyDown wont do anything for some ms
         let temp = $handleKeyDown;
         $handleKeyDown = null;
-        setTimeout(() => ($handleKeyDown = temp), 1500);
+        setTimeout(() => ($handleKeyDown = temp), ms);
     };
 
     const writeLetter = (key) => {
