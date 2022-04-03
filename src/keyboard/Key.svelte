@@ -43,8 +43,6 @@
         touch-action: manipulation;
         transition: background 500ms;
         text-transform: uppercase;
-        -webkit-user-select: none;
-        -ms-user-select: none;
     }
     .key[data-bigkey] {
         flex: 2;

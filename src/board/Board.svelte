@@ -139,8 +139,10 @@
                 }
             } else {
                 boardState[$cursor.row][i] = "absent";
-
-                $usedLetters[letter] = "absent";
+                if (!$usedLetters[letter]) {
+                    // make sure that we don't overwrite it if it exists at all
+                    $usedLetters[letter] = "absent";
+                }
             }
         });
     };
