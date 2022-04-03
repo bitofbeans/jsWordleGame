@@ -15,6 +15,7 @@
         usedLetters,
         gameState,
         toasts,
+        generateWordSet,
     } from "../util";
 
     // Get Board element
@@ -29,6 +30,7 @@
         if (key === "Enter") {
             if ($gameState.gameOver === true) {
                 // reset game
+                generateWordSet()
                 $board = getDefaultBoard();
                 boardState = getDefaultBoard();
                 $cursor = { row: 0, letterPos: 0 };

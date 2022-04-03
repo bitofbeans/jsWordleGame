@@ -17,7 +17,9 @@
     // when state changes to something truthy, set animation
     $: state && (animation = "flip-in");
 
+    // for resetting
     $: state == "" && (tileState = "")
+    
     // if state changes to this, dont animate
     $: state === "guessed-correct" && ((animation = ""), (tileState = state));
 
@@ -49,15 +51,6 @@
 </div>
 
 <style lang="scss">
-    @keyframes fade-in {
-        0% {
-            opacity: 0;
-        }
-        100% {
-            opacity: 1;
-        }
-    }
-
     @keyframes pop-in {
         0% {
             opacity: 0;

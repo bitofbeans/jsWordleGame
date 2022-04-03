@@ -23,13 +23,12 @@ const generateWordSet = () => {
     correctWord.set(word);
 };
 
-const addToast = ({ type = "small", content = "", timeOut = 1000 }) => {
+const addToast = ({ content = "", timeOut = 1000 }) => {
     // unique id to find it later
     const id = Math.floor(Math.random() * 10000);
 
     const toast = {
         id,
-        type,
         content,
     };
 
@@ -51,7 +50,6 @@ const cursor = writable({ row: 0, letterPos: 0 });
 const wordSet = writable();
 const correctWord = writable();
 generateWordSet();
-correctWord.set("still"); // for testing
 
 const handleKeyDown = writable();
 

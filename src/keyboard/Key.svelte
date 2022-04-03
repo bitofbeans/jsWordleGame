@@ -6,6 +6,7 @@
     let state;
 
     const handleKeyPressed = () => {
+        // convert key vals to proper key names
         if (val === "enter") $handleKeyDown({ key: "Enter" });
         if (val === "del") $handleKeyDown({ key: "Backspace" });
         else $handleKeyDown({ key: val });
@@ -45,11 +46,9 @@
         -webkit-user-select: none;
         -ms-user-select: none;
     }
-
     .key[data-bigkey] {
         flex: 2;
     }
-
     .key[data-state="correct"] {
         background: #538d4e;
     }

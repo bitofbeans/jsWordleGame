@@ -10,20 +10,11 @@
 </div>
 
 <style>
-    @keyframes fade-out {
-        0% {
-            opacity: 1;
-        }
-        100% {
-            opacity: 0;
-        }
-    }
     .toaster {
         position: absolute;
         display: flex;
         justify-content: center;
         align-items: center;
-        width: max-content;
         flex-direction: column;
     }
 </style>
